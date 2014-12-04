@@ -74,9 +74,8 @@ def center_weighting_from_sam(bamFile,min_read_length=20,max_read_length=42,refe
 def geneFrame(genbank_file):
     """Function: Parses genbank file to dataframe format for easier downstream utilization
 	Input: Genbank file
-    Output1: Dataframe containing all genes, start/stop locations and strand (plus/minus), 
+    Output: Dataframe containing all genes, start/stop locations and strand (plus/minus), 
     as well as gene function, product and amino acid sequence
-    Output2: Dataframe where every nucleotide is a row in the sequence, used for... 
     """
     from Bio import SeqIO
     
@@ -91,7 +90,7 @@ def geneFrame(genbank_file):
     aaseq = []
     cds_seq = []
     
-    genome_seq_df = pd.DataFrame({'sequence':list(infile.seq.tostring())},index=range(1,len(infile.seq.tostring())+1))
+
     for feature in infile.features:
         if feature.type == 'CDS' and 'product' in feature.qualifiers:  #Only cares for coding sequences which are not pseudogenes
             genes.append(feature.qualifiers['locus_tag'][0])
@@ -115,7 +114,7 @@ def geneFrame(genbank_file):
     df = pd.DataFrame({"gene": genes, "name": name, "product": product, "function": func, "strand": strand, "start": start, "stop": stop, "cds_seq":cds_seq,"aaseq": aaseq},
                           columns = ["gene", "name", "function", "product", "strand", "start", "stop", "cds_seq","aaseq"])
     df = df.set_index("gene")
-    return df, genome_seq_df  #FOR HAYTHEM: I'm not sure what the genome_seq_df is for
+    return df
 
 def countReads(rawreaddensities):
     """Function: counts the total number of reads, used for normalisation
@@ -174,8 +173,8 @@ def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell):
     
     return absolute_rate_df
 
-def meta_gene(genes, readdensities,distance=999): #MORE INFO NEEDED HERE
-    """Function: Calculates average read densities at the start and end of all genes in order to verify ...
+def meta_gene(genes, readdensities,distance=999):
+    """Function: Calculates average read densities at the start and end of all genes in order to show the overall patterns of ribosome distribution across genes
     Input1(genes): Dataframe from geneFrame()
     Input2(readdensities): Dataframe of center weighted read densities from center_weighting_from_SAM
     Input3(distance): Integer, how far along each gene to read. Default = 999
@@ -238,7 +237,7 @@ def half_gene_densities(genes, readdensities,min_read_count=1,aa_ends_excluded=5
     #print stats.pearsonr(log(first),log(second))
     return result
 
-def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_length=150,aa_ends_excluded=5,p0=[.446,6e-3,1]): #HAYTHEM: Need to generalize some of the stuff in here
+def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_length=150,aa_ends_excluded=5,p0=[.446,6e-3,1]): 
     """Function: Tries to check for dropoff of read densities along gene by comparing read densities in 
     50 codon windows against first 50 codons. This function tries to fit the dropoff of read densities
 	with an exponential curve, plots the read densities against the fitted curve and returns the parameters
@@ -247,7 +246,8 @@ def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_lengt
 	Input3(min_read_count): Float. The minimum number of reads to qualify a gene for inclusion. Default = 1
 	Input4(min_length): Integer. Minimum length of gene to qualify for inclusion. Default = 150
 	Input5(aa_ends_excluded): Number of amino acids to exclude from each end. Default = 5
-	Input6(p0): List of 3 floats. Input value for curve fitting optimization. Default value = [0.446, 6e-3, 1]
+	Input6(p0): List of 3 floats. Input value for curve fitting optimization. Default value = [0.446, 6e-3, 1], 
+	This is specific for E coli. If this does not work, change slightly and try again
 	Output1,2 and 3(A,K,C): Float values for fitted parameters to the dropoff curve.
 	"""
     window_counter = {1:[]}     #all genes we look at will have first window
@@ -319,7 +319,7 @@ def exp_dropoff_correction(genes, readdensities,min_read_count=1,min_length=150,
 	Input3(min_read_count): Float minimum number of reads for the gene to be used in the analysis. Default = 1
 	Input4(min_length): Integer minimum length for the gene to be used in the analysis. Default = 150
 	Input5(aa_ends_excluded): Integer number of codons to exclude from each end to account for initiation and termination effects. Default = 5
-	Input 5(p0): List of 3 floats for optimization of curve fitting. Default = [.446, 6e-3, 1]
+	Input 5(p0): List of 3 floats used as inputs for optimization of curve fitting. Default = [.446, 6e-3, 1], change if required
 	Output1: Dataframe of length corrected read densities
 	"""
     A,K,C = gene_length_dropoff_function(genes, readdensities,min_read_count=min_read_count,\
