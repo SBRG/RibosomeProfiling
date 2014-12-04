@@ -12,12 +12,16 @@ if __name__=='__main__':
     center_weighting_from_sam(bamFile, min_read_length=20,max_read_length=42,reference='NC_000913')
 
 def center_weighting_from_sam(bamFile,min_read_length=20,max_read_length=42,reference='NC_000913'):
-    """Input: Bamfile of ribosome profile reads mapped to the reference genome
+    """Function: Center weighting is achieved by taking off 1/2 the min_read_length at each end of each read and weighting the 
+    remaining nucleotides in the center equally. This is summed up for all reads at one position. Minimum and
+    maximum read length allowed can be set (default of 20/42)
+	Input1(bamFile): Bamfile of ribosome profile reads mapped to the reference genome
+	Input2(min_read_length): Integer of the minimum read length to include
+	Input3(max_read_length): Integer of the maximum read length to include
+	Input4(reference): NCBI identifier of organism to use
     Output1: Write .gff file of read densities at every nucleotide position on + and - strands in current directory
     Output2: Returns dataframe of read densities at every nucleotide position on + and - strands 
-    Function: Center weighting is achieved by taking off 1/2 the min_read_length at each end of each read and weighting the 
-    remaining nucleotides in the center equally. This is summed up for all reads at one position. Minimum and
-    maximum read length allowed can be set (default of 20/42)"""
+    """
     
     bamfile = ps.Samfile( bamFile )
     base_name = bamFile[:-4]
@@ -68,11 +72,12 @@ def center_weighting_from_sam(bamFile,min_read_length=20,max_read_length=42,refe
     
     
 def geneFrame(genbank_file):
-    """Input: Genbank file
+    """Function: Parses genbank file to dataframe format for easier downstream utilization
+	Input: Genbank file
     Output1: Dataframe containing all genes, start/stop locations and strand (plus/minus), 
     as well as gene function, product and amino acid sequence
     Output2: Dataframe where every nucleotide is a row in the sequence, used for... 
-    Function: Parses genbank file to dataframe format for easier downstream utilization"""
+    """
     from Bio import SeqIO
     
     infile = SeqIO.read(genbank_file,'gb')
@@ -113,20 +118,22 @@ def geneFrame(genbank_file):
     return df, genome_seq_df  #FOR HAYTHEM: I'm not sure what the genome_seq_df is for
 
 def countReads(rawreaddensities):
-    """Input: Dataframe of center weighted read densities
+    """Function: counts the total number of reads, used for normalisation
+	Input: Dataframe of center weighted read densities
     Output: Float count
-    Function: counts the total number of reads, used for normalisation"""
+    """
     count = rawreaddensities.sum().sum()
     return count
 
 
 def RPM_normed_gene_expression(genes, readdensities, totalreads, aa_ends_excluded=5):
-    """Input1(genes): Dataframe produced by geneFrame()
+    """Function: This script will calculate 'RPKM' for all genes in a given dataset
+	Input1(genes): Dataframe produced by geneFrame()
     Input2(readdensities): Dataframe of center weighted read densities produced by center_weighting_from_sam()
     Input3(totalreads): Float from countReads() 
     Input4(aa_ends_excluded): Integer number of codons to exclude from each end to account for effects of translation initiation and termination. Default = 5
     Output: Dataframe of RPKM normalized read count for each gene
-    Function: This script will calculate 'RPKM' for all genes in a given dataset"""
+    """
     expression = []
     ind_list=[]
     for index, row in genes.iterrows():
@@ -141,11 +148,12 @@ def RPM_normed_gene_expression(genes, readdensities, totalreads, aa_ends_exclude
     return gene_expression_df
 
 def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell):  #HAYTHEM: Need help with this one, not sure where to find protein_mass_per_cell
-    """Input1(gene_df): Dataframe from geneFrame()
+    """Function: Calculates the absolute protein synthesis rate for each gene by multiplying its relative translation rate to the input protein mass per cell
+	Input1(gene_df): Dataframe from geneFrame()
     Input2(gene_expression_df): Dataframe of normalized gene read count from RPM_normed_gene_expression()
     Input3(protein_mass_per_cell): 
     Output: Dataframe of absolute synthesis rate for each gene
-    Function: Calculates the absolute protein synthesis rate for each gene by multiplying its relative translation rate to the input protein mass per cell
+   
     """
     from Bio.SeqUtils.ProtParam import ProtParamData, ProteinAnalysis
     #sum the total protein mass*readdensity
@@ -166,8 +174,8 @@ def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell):
     
     return absolute_rate_df
 
-def meta_gene(genes, readdensities,distance=999):
-    """
+def meta_gene(genes, readdensities,distance=999): #MORE INFO NEEDED HERE
+    """Function: Calculates average read densities at the start and end of all genes in order to verify ...
     Input1(genes): Dataframe from geneFrame()
     Input2(readdensities): Dataframe of center weighted read densities from center_weighting_from_SAM
     Input3(distance): Integer, how far along each gene to read. Default = 999
@@ -205,7 +213,12 @@ def meta_gene(genes, readdensities,distance=999):
     return meta_gene_start_df, meta_gene_stop_df
     
 def half_gene_densities(genes, readdensities,min_read_count=1,aa_ends_excluded=5):
-    """compares the read densities along the first half of the gene and the second half of the gene"""
+    """Function: Compares the sum of read densities along the first and second half of each gene
+	Input1(genes): Dataframe of gene annotations from geneFrame()
+	Input2(readdensities): Dataframe of center weighted read densities from center_weighting_from_sam()
+	Input3(min_read_count): Float of integer of the minimum read count to qualify a gene for this analysis
+	Input4(aa_ends_excluded): Integer number of amino acid codons to exclude from each end to reduce effects of initiation and termination
+	Output1: List of two lists of floats [[gene 1 front, gene 2 front,..],[gene 1 back, gene 2 back,..]]"""
     first = []
     second = []
     for index, row in genes.iterrows():
@@ -225,10 +238,18 @@ def half_gene_densities(genes, readdensities,min_read_count=1,aa_ends_excluded=5
     #print stats.pearsonr(log(first),log(second))
     return result
 
-def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_length=150,aa_ends_excluded=5,p0=[.446,6e-3,1]):
-    """tries to check for dropoff of read densities along gene by comparing read densities in 
-    50 codon windows against first 50 codons. This function takes a gene dataframe and a read
-    density dataframe"""
+def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_length=150,aa_ends_excluded=5,p0=[.446,6e-3,1]): #HAYTHEM: Need to generalize some of the stuff in here
+    """Function: Tries to check for dropoff of read densities along gene by comparing read densities in 
+    50 codon windows against first 50 codons. This function tries to fit the dropoff of read densities
+	with an exponential curve, plots the read densities against the fitted curve and returns the parameters
+	Input1(genes): Dataframe of gene annotations from geneFrame()
+	Input2(readdensities): Dataframe of center weighted read densities from center_weighting_from_sam()
+	Input3(min_read_count): Float. The minimum number of reads to qualify a gene for inclusion. Default = 1
+	Input4(min_length): Integer. Minimum length of gene to qualify for inclusion. Default = 150
+	Input5(aa_ends_excluded): Number of amino acids to exclude from each end. Default = 5
+	Input6(p0): List of 3 floats. Input value for curve fitting optimization. Default value = [0.446, 6e-3, 1]
+	Output1,2 and 3(A,K,C): Float values for fitted parameters to the dropoff curve.
+	"""
     window_counter = {1:[]}     #all genes we look at will have first window
     window_averages = []
     for index, row in genes.iterrows():
@@ -252,7 +273,7 @@ def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_lengt
                     else:
                         window_counter[window] = [readdensities[strand][start + min_length * (window - 1): start + min_length * (window)].sum() / firstwindow]
                     window += 1
-                    if readdensities[strand][start + min_length * (window - 1): start + min_length * (window)].sum() / firstwindow > 49000.459866486657:
+                    if readdensities[strand][start + min_length * (window - 1): start + min_length * (window)].sum() / firstwindow > 49000.459866486657: 
                         print index
             
             #minus strand
@@ -287,12 +308,20 @@ def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_lengt
 
     
 def model_func(t, A, K, C):
-    """Function: Exponential dropoff fitting function"""
+    """Function: Exponential dropoff fitting function, not explicitly called, but used for curve fitting optimization in gene_length_dropoff_function()"""
     return A * np.exp(-K * t) + C
 
 
 def exp_dropoff_correction(genes, readdensities,min_read_count=1,min_length=150,aa_ends_excluded=5,p0=[.446,6e-3,1]):
-    
+    """Function: Uses gene_length_dropoff_function() to determine the dropoff with length of gene and corrects the read densities for this dropoff
+	Input1(genes): Dataframe of gene annotations from geneFrame()
+	Input2(readdensities): Dataframe of center weighted read densities from center_weighting_from_sam
+	Input3(min_read_count): Float minimum number of reads for the gene to be used in the analysis. Default = 1
+	Input4(min_length): Integer minimum length for the gene to be used in the analysis. Default = 150
+	Input5(aa_ends_excluded): Integer number of codons to exclude from each end to account for initiation and termination effects. Default = 5
+	Input 5(p0): List of 3 floats for optimization of curve fitting. Default = [.446, 6e-3, 1]
+	Output1: Dataframe of length corrected read densities
+	"""
     A,K,C = gene_length_dropoff_function(genes, readdensities,min_read_count=min_read_count,\
                                         min_length=min_length,aa_ends_excluded=aa_ends_excluded,p0=p0)
     i = range(1,10000)
