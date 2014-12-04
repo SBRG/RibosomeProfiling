@@ -150,7 +150,8 @@ def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell):
     """Function: Calculates the absolute protein synthesis rate for each gene by multiplying its relative translation rate to the input protein mass per cell
 	Input1(gene_df): Dataframe from geneFrame()
     Input2(gene_expression_df): Dataframe of normalized gene read count from RPM_normed_gene_expression()
-    Input3(protein_mass_per_cell): 
+    Input3(protein_mass_per_cell): Float. Estimated by dividing the amount of proteins per unit of cell culture. 
+	This is dependent on culture conditions and calculated according to supplemental methods in Li et al 2014 (doi: 10.1016/j.cell.2014.02.033)
     Output: Dataframe of absolute synthesis rate for each gene
    
     """
