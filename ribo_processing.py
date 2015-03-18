@@ -146,7 +146,7 @@ def RPM_normed_gene_expression(genes, readdensities, totalreads, aa_ends_exclude
     gene_expression_df = pd.DataFrame({'gene_expression':expression},index=ind_list)
     return gene_expression_df
 
-def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell):  #HAYTHEM: Need help with this one, not sure where to find protein_mass_per_cell
+def absolute_synthesis_rate(gene_df, gene_expression_df, protein_mass_per_cell): 
     """Function: Calculates the absolute protein synthesis rate for each gene by multiplying its relative translation rate to the input protein mass per cell
 	Input1(gene_df): Dataframe from geneFrame()
     Input2(gene_expression_df): Dataframe of normalized gene read count from RPM_normed_gene_expression()
