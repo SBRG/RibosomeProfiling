@@ -90,7 +90,7 @@ def geneFrame(genbank_file):
     aaseq = []
     cds_seq = []
     
-
+    genome_seq_df = pd.DataFrame({'sequence':list(str(infile.seq))},index=range(1,len(str(infile.seq))+1))
     for feature in infile.features:
         if feature.type == 'CDS' and 'product' in feature.qualifiers:  #Only cares for coding sequences which are not pseudogenes
             genes.append(feature.qualifiers['locus_tag'][0])
@@ -114,7 +114,7 @@ def geneFrame(genbank_file):
     df = pd.DataFrame({"gene": genes, "name": name, "product": product, "function": func, "strand": strand, "start": start, "stop": stop, "cds_seq":cds_seq,"aaseq": aaseq},
                           columns = ["gene", "name", "function", "product", "strand", "start", "stop", "cds_seq","aaseq"])
     df = df.set_index("gene")
-    return df
+    return df, genome_seq_df
 
 def countReads(rawreaddensities):
     """Function: counts the total number of reads, used for normalisation
@@ -136,11 +136,11 @@ def RPM_normed_gene_expression(genes, readdensities, totalreads, aa_ends_exclude
     expression = []
     ind_list=[]
     for index, row in genes.iterrows():
-        start = row['start'] + aa_ends_excluded*3+1 #exclude first and last 5 codons to remove effects of translation initiation and termination
-        stop = row['stop'] - aa_ends_excluded*3-1
+        start = row['start'] + aa_ends_excluded*3-1 #exclude first and last 5 codons to remove effects of translation initiation and termination
+        stop = row['stop'] - aa_ends_excluded*3
         strand = row['strand']
         length = row['stop'] - row['start'] + 1
-        genesum = readdensities[strand].ix[start: stop].sum() * 1000000000 / length / totalreads #sum up all read densities along gene
+        genesum = readdensities[strand][start: stop].sum() * 1000000000 / length / totalreads #sum up all read densities along gene
         expression.append(genesum)
         ind_list.append(index)
     gene_expression_df = pd.DataFrame({'gene_expression':expression},index=ind_list)
@@ -189,7 +189,7 @@ def meta_gene(genes, readdensities,distance=999):
         start = row['start']
         stop = row['stop']
         strand = row['strand']
-        length = row['stop'] - row['start'] + 1
+        length = stop - start + 1
         if length < distance:
             continue #only count genes which are longer than the read distance or this will skew the averaging
         
@@ -222,10 +222,10 @@ def half_gene_densities(genes, readdensities,min_read_count=1,aa_ends_excluded=5
     first = []
     second = []
     for index, row in genes.iterrows():
-        start = row['start'] + aa_ends_excluded*3+1 #exclude first N codons to remove effects of translation initiation
-        stop = row['stop'] - + aa_ends_excluded*3-1 #exclude last N codons to remove effects of translation termination
+        start = row['start'] + aa_ends_excluded*3-1 #exclude first N codons to remove effects of translation initiation
+        stop = row['stop'] - + aa_ends_excluded*3 #exclude last N codons to remove effects of translation termination
         strand = row['strand']
-        length = stop - start
+        length = stop - start + 1
         firsthalf = 0.
         secondhalf = 0.
         if length > 60:   #Only count the gene if it is more than 20 codons
@@ -254,10 +254,10 @@ def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_lengt
     window_counter = {1:[]}     #all genes we look at will have first window
     window_averages = []
     for index, row in genes.iterrows():
-        start = row['start'] + aa_ends_excluded*3+1   #exclude first and last 5 codons
-        stop = row['stop'] - aa_ends_excluded*3-1
+        start = row['start'] + aa_ends_excluded*3-1   #exclude first and last 5 codons
+        stop = row['stop'] - aa_ends_excluded*3
         strand = row['strand']
-        length = stop - start
+        length = stop - start + 1
         if readdensities[strand][start:stop].sum() > min_read_count and length > min_length: #only take those with more than 128 reads
             window = 1          #Starting from second window
             #plus strand
@@ -337,20 +337,42 @@ def exp_dropoff_correction(genes, readdensities,min_read_count=1,min_length=150,
     
     for index, row in genes.iterrows():
         #print index
-        start = row['start'] + aa_ends_excluded*3+1   #exclude first and last 5 codons
-        stop = row['stop'] - aa_ends_excluded*3-1
+        start = row['start'] + aa_ends_excluded*3-1   #exclude first and last 5 codons
+        stop = row['stop'] - aa_ends_excluded*3
         strand = row['strand']
-        length = stop - start
+        length = stop - start + 1
         
         if strand == 'plus':
-            for i in range(length + 1):
+            for i in range(length):
                 dropoff_corrected_read_densities['plus_corrected'][start + i] = dropoff_corrected_read_densities['plus'][start + i] / multiplier[i]
         
         else:
-            for i in range(length + 1):
+            for i in range(length):
                 dropoff_corrected_read_densities['minus_corrected'][stop - i] = dropoff_corrected_read_densities['minus'][stop - i] / multiplier[i]
                 
     del dropoff_corrected_read_densities['plus']
     del dropoff_corrected_read_densities['minus']
     dropoff_corrected_read_densities.columns = ['plus','minus']
     return dropoff_corrected_read_densities
+
+def pause_site_correction(genes, readdensities, totalreads, method='std_dev', aa_ends_excluded=5): 
+    pause_corrected_read_densities = readdensities.copy()
+    pause_corrected_read_densities['plus'] = 0.000
+    pause_corrected_read_densities['minus'] = 0.000    #make a copy of the read densities and set the initial values for correction columns to 0.
+    for index, row in gene_df1.iterrows():
+        start = row['start'] + aa_ends_excluded*3-1 #exclude first and last 5 codons to remove effects of translation initiation and termination
+        stop = row['stop'] - aa_ends_excluded*3
+        strand = row['strand']
+        length = stop - start + 1
+        gene_series = readdensities[strand][start:stop]
+        ave = gene_series.sum()/length #find the average occupancy across the gene
+        std_dev = np.std(gene_series/float(length)) #find the standard deviation
+        if method == 'std_dev':
+            threshold = ave + 5*std_dev
+            #print threshold
+        for i in range(length):
+            if readdensities[strand][start+i] < threshold: #pause sites are considered to be nucleotides where occupancy is > threshold 
+                pause_corrected_read_densities[strand][start+i] = readdensities[strand][start+i]
+            else: #occupancy on identified pause sites are reduced to threshold value
+                pause_corrected_read_densities[strand][start+i] = threshold
+    return pause_corrected_read_densities
