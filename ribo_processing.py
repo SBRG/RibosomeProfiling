@@ -359,7 +359,7 @@ def pause_site_correction(genes, readdensities, totalreads, method='std_dev', aa
     pause_corrected_read_densities = readdensities.copy()
     pause_corrected_read_densities['plus'] = 0.000
     pause_corrected_read_densities['minus'] = 0.000    #make a copy of the read densities and set the initial values for correction columns to 0.
-    for index, row in gene_df1.iterrows():
+    for index, row in genes.iterrows():
         start = row['start'] + aa_ends_excluded*3-1 #exclude first and last 5 codons to remove effects of translation initiation and termination
         stop = row['stop'] - aa_ends_excluded*3
         strand = row['strand']
