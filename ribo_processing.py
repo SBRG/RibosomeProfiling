@@ -102,7 +102,10 @@ def geneFrame(genbank_file):
                 func.append(feature.qualifiers['function'][0])
             else:
                 func.append("N/A")
-            aaseq.append(feature.qualifiers['translation'][0])
+            try:
+                aaseq.append(feature.qualifiers['translation'][0])
+            else:
+                aaseq.append("N/A")
             if feature.strand == 1:
                 strand.append("plus") 
                 start.append(feature.location.start.real+1)  
@@ -295,7 +298,7 @@ def gene_length_dropoff_function(genes, readdensities,min_read_count=1,min_lengt
     for i in range(1, len(window_counter) + 1):
         window_averages.append(np.median(window_counter[i]))
     
-    plotx = range(25,875,50)
+    plotx = range(aa_ends_excluded*3,875,min_length)
     plot_x = np.array(plotx)
     popt, pcov = optimize.curve_fit(model_func,plot_x,window_averages[0:len(plotx)],p0=p0)
     A, K, C = popt[0], popt[1], popt[2]
@@ -355,7 +358,7 @@ def exp_dropoff_correction(genes, readdensities,min_read_count=1,min_length=150,
     dropoff_corrected_read_densities.columns = ['plus','minus']
     return dropoff_corrected_read_densities
 
-def pause_site_correction(genes, readdensities, totalreads, method='std_dev', aa_ends_excluded=5): 
+def pause_site_correction(genes, readdensities, totalreads, method='std_dev',set_to_zero=False, aa_ends_excluded=5): 
     pause_corrected_read_densities = readdensities.copy()
     pause_corrected_read_densities['plus'] = 0.000
     pause_corrected_read_densities['minus'] = 0.000    #make a copy of the read densities and set the initial values for correction columns to 0.
@@ -373,6 +376,8 @@ def pause_site_correction(genes, readdensities, totalreads, method='std_dev', aa
         for i in range(length):
             if readdensities[strand][start+i] < threshold: #pause sites are considered to be nucleotides where occupancy is > threshold 
                 pause_corrected_read_densities[strand][start+i] = readdensities[strand][start+i]
-            else: #occupancy on identified pause sites are reduced to threshold value
+            elif set_to_zero: #occupancy on identified pause sites are reduced to threshold value
+                pause_corrected_read_densities[strand][start+i] = 0.
+            else:
                 pause_corrected_read_densities[strand][start+i] = threshold
     return pause_corrected_read_densities
