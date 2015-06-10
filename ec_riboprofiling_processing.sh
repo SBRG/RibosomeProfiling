@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 #
 #if [ "$#" -ne 1 ] || ! [ -d "$1" ]; then
 #  echo "Usage: $0 bowtie_index_dir <untrimmed_fastq_1> <untrimmed_fastq_2>...<untrimmed_fastq_N>" &> log.txt
@@ -8,7 +8,10 @@
 ################
 #make sure that bowtie index is one folder up from the sample fastq files
 #Also, might want to push stderr and stdout to a logfile by using &> log.txt
-
+#In this protocol, we make use of various bowtie indices which include only tRNA sequences (ec_trna_btw) 
+#only rRNA sequences(ec_rRNA_ext_btw), all other non-coding RNA sequences(ec_RNA_other_btw), 
+#or the whole genome (ec_all_btw). This allows us to view the tRNA and rRNA contamination, but is not
+#strictly necessary. You can align to the whole genome and use that to proceed on with the protocol.
 
 for input in "$@"
 do
