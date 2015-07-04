@@ -1,0 +1,212 @@
+b2675,ribonucleoside diphosphate reductase 2,nrdE,2,same_operon
+b2676,ribonucleoside diphosphate reductase 2,nrdF,2,same_operon
+b2025,imidazole glycerol phosphate synthase,hisF,1,same_operon
+b2023,imidazole glycerol phosphate synthase,hisH,1,same_operon
+b1263,anthranilate synthase,trpD,2,same_operon
+b1264,anthranilate synthase,trpE,2,same_operon
+b2307,histidine transporter,hisM,1,same_operon
+b2306,histidine transporter,hisP,2,same_operon
+b2308,histidine transporter,hisQ,1,same_operon
+b2441,ethanolamine ammonia-lyase,eutB,6,same_operon
+b2440,ethanolamine ammonia-lyase,eutC,6,same_operon
+b4245,aspartate transcarbamylase,pyrB,6,same_operon
+b4244,aspartate transcarbamylase,pyrI,6,same_operon
+b3892,formate dehydrogenase-O,fdoI,1,same_operon
+b3893,formate dehydrogenase-O,fdoH,1,same_operon
+b3894,formate dehydrogenase-O,fdoG,1,same_operon
+b0733,cytochrome bd-I,cydA,1,same_operon
+b0734,cytochrome bd-I,cydB,1,same_operon
+b1116,lolCDE lipoprotein transporter,lolC,1,same_operon
+b1118,lolCDE lipoprotein transporter,lolE,1,same_operon
+b1117,lolCDE lipoprotein transporter,lolD,2,same_operon
+b4154,fumarate reductase,frdA,1,same_operon
+b4153,fumarate reductase,frdB,1,same_operon
+b4152,fumarate reductase,frdC,1,same_operon
+b4151,fumarate reductase,frdD,1,same_operon
+b1245,oligopeptide transporter,oppC,1,same_operon
+b1244,oligopeptide transporter,oppB,1,same_operon
+b1246,oligopeptide transporter,oppD,1,same_operon
+b1247,oligopeptide transporter,oppF,1,same_operon
+b0728,succinyl-CoA synthetase,sucC,2,same_operon
+b0729,succinyl-CoA synthetase,sucD,2,same_operon
+b0723,succinate dehydrogenase,sdhA,1,same_operon
+b0721,succinate dehydrogenase,sdhC,1,same_operon
+b0724,succinate dehydrogenase,sdhB,1,same_operon
+b0722,succinate dehydrogenase,sdhD,1,same_operon
+b2287,NADH dehydrogenase I,nuoB,1,same_operon
+b2286,NADH dehydrogenase I,nuoC,1,same_operon
+b2288,NADH dehydrogenase I,nuoA,1,same_operon
+b2284,NADH dehydrogenase I,nuoF,1,same_operon
+b2283,NADH dehydrogenase I,nuoG,1,same_operon
+b2285,NADH dehydrogenase I,nuoE,1,same_operon
+b2280,NADH dehydrogenase I,nuoJ,1,same_operon
+b2279,NADH dehydrogenase I,nuoK,1,same_operon
+b2282,NADH dehydrogenase I,nuoH,1,same_operon
+b2281,NADH dehydrogenase I,nuoI,1,same_operon
+b2276,NADH dehydrogenase I,nuoN,1,same_operon
+b2278,NADH dehydrogenase I,nuoL,1,same_operon
+b2277,NADH dehydrogenase I,nuoM,1,same_operon
+b2234,ribonucleoside diphosphate reductase 1,nrdA,2,same_operon
+b2235,ribonucleoside diphosphate reductase 1,nrdB,2,same_operon
+b1709,vitamin B12 transporter,btuD,2,same_operon
+b1711,vitamin B12 transporter,btuC,2,same_operon
+b0151,iron (III) hydroxamate transporter,fhuC,2,same_operon
+b0153,iron (III) hydroxamate transporter,fhuB,1,same_operon
+b3463,ftsEX ABC transporter,ftsE,2,same_operon
+b3462,ftsEX ABC transporter,ftsX,2,same_operon
+b1291,peptide tranporter,sapD,1,same_operon
+b1290,peptide tranporter,sapF,1,same_operon
+b1293,peptide tranporter,sapB,1,same_operon
+b1292,peptide tranporter,sapC,1,same_operon
+b1602,pyridine nucleotide transhydrogenase,pntB,2,same_operon
+b1603,pyridine nucleotide transhydrogenase,pntA,2,same_operon
+b0033,carbamoyl phosphate synthetase,carB,2,same_operon
+b0032,carbamoyl phosphate synthetase,carA,2,same_operon
+b1124,putrescine and spermidine transporter,potC,1,same_operon
+b1125,putrescine and spermidine transporter,potB,1,same_operon
+b1126,putrescine and spermidine transporter,potA,2,same_operon
+b0785,molybdopterin synthase,moaE,2,same_operon
+b0784,molybdopterin synthase,moaD,2,same_operon
+b0924,bacterial condensin,mukB,2,same_operon
+b0922,bacterial condensin,mukF,1,same_operon
+b0923,bacterial condensin,mukE,2,same_operon
+b0432,cytochrome bo,cyoA,1,same_operon
+b0430,cytochrome bo,cyoC,1,same_operon
+b0431,cytochrome bo,cyoB,1,same_operon
+b0429,cytochrome bo,cyoD,1,same_operon
+b0077,acetolactate synthase,ilvI,2,same_operon
+b0078,acetolactate synthase,ilvH,2,same_operon
+b3559,glycyl-tRNA synthetase,glyS,2,same_operon
+b3560,glycyl-tRNA synthetase,glyQ,2,same_operon
+b3986,50S ribosomal L8 complex,rplL,4,same_operon
+b3985,50S ribosomal L8 complex,rplJ,1,same_operon
+b4174,regulator of FtsH protease,hflK,1,same_operon
+b4175,regulator of FtsH protease,hflC,1,same_operon
+b1714,phenylalanyl-tRNA synthetase,pheS,2,same_operon
+b1713,phenylalanyl-tRNA synthetase,pheT,2,same_operon
+b3735,F0F1 ATP synthase,atpH,1,same_operon
+b3731,F0F1 ATP synthase,atpC,1,same_operon
+b3738,F0F1 ATP synthase,atpB,1,same_operon
+b3734,F0F1 ATP synthase,atpA,3,same_operon
+b3733,F0F1 ATP synthase,atpG,1,same_operon
+b3736,F0F1 ATP synthase,atpF,2,same_operon
+b3737,F0F1 ATP synthase,atpE,10,same_operon
+b3732,F0F1 ATP synthase,atpD,3,same_operon
+b2341,anaerobic fatty acid oxidation complex,fadJ,2,same_operon
+b2342,anaerobic fatty acid oxidation complex,fadI,2,same_operon
+b3212,glutamate synthase,gltB,1,same_operon
+b3213,glutamate synthase,gltD,1,same_operon
+b0886,glutathione efflux transporter,cydC,2,same_operon
+b0887,glutathione efflux transporter,cydD,2,same_operon
+b0071,isopropylmalate isomerase,leuD,1,same_operon
+b0072,isopropylmalate isomerase,leuC,1,same_operon
+b3839,twin-arginine translocation tatBC,tatC,1,same_operon
+b3838,twin-arginine translocation tatBC,tatB,1,same_operon
+b1261,tryptophan synthase,trpB,2,same_operon
+b1260,tryptophan synthase,trpA,2,same_operon
+b2763,sulfite reductase,cysI,4,same_operon
+b2764,sulfite reductase,cysJ,8,same_operon
+b1683,Fe-S cluster scaffold,sufB,1,same_operon
+b1682,Fe-S cluster scaffold,sufC,2,same_operon
+b1681,Fe-S cluster scaffold,sufD,1,same_operon
+b3343,sulfur transfer protein,yheL,2,same_operon
+b3344,sulfur transfer protein,yheM,2,same_operon
+b3345,sulfur transfer protein,yheN,2,same_operon
+b1600,spermidine efflux transporter,mdtJ,1,same_operon
+b1599,spermidine efflux transporter,mdtI,1,same_operon
+b0198,methionine transport,metI,1,same_operon
+b0199,methionine transport,metN,2,same_operon
+b0115,pyruvate dehydrogenase,aceF,24,same_operon
+b0114,pyruvate dehydrogenase,aceE,24,same_operon
+b3670,acetohydroxybutanoate synthase,ilvN,2,same_operon
+b3671,acetohydroxybutanoate synthase,ilvB,2,same_operon
+b2682,valine efflux,ygaZ,1,same_operon
+b2683,valine efflux,ygaH,1,same_operon
+b3543,dipeptide tranporter,dppB,1,same_operon
+b3542,dipeptide tranporter,dppC,1,same_operon
+b3541,dipeptide tranporter,dppD,1,same_operon
+b3540,dipeptide tranporter,dppF,1,same_operon
+b2203,periplasmic nitrate reductase,napB,1,same_operon
+b2206,periplasmic nitrate reductase,napA,1,same_operon
+b2820,recBCD helicase,recB,1,different_operon
+b2822,recBCD helicase,recC,1,different_operon
+b2819,recBCD helicase,recD,1,different_operon
+b2316,acetyl-CoA carboxyltransferase,accD,2,different_operon
+b0185,acetyl-CoA carboxyltransferase,accA,2,different_operon
+b4000,nucleoid associated protein HU,hupA,1,different_operon
+b0440,nucleoid associated protein HU,hupB,1,different_operon
+b2509,exonuclease VII,xseA,1,different_operon
+b0422,exonuclease VII,xseB,4,different_operon
+b3300,sec translocase,secY,1,different_operon
+b3981,sec translocase,secE,1,different_operon
+b3175,sec translocase,secG,1,different_operon
+b1812,4-amino-4-deoxychorismate synthase,pabB,1,different_operon
+b3360,4-amino-4-deoxychorismate synthase,pabA,1,different_operon
+b4261,lptBFG transporter,lptF,1,different_operon
+b4262,lptBFG transporter,lptG,1,different_operon
+b3201,lptBFG transporter,lptB,2,different_operon
+b0083,ftsLBQ cell division complex,ftsL,1,different_operon
+b2748,ftsLBQ cell division complex,ftsB,1,different_operon
+b0093,ftsLBQ cell division complex,ftsQ,1,different_operon
+b1712,integration host factor,ihfA,1,different_operon
+b0912,integration host factor,ihfB,1,different_operon
+b4033,maltose transporter,malF,1,different_operon
+b4032,maltose transporter,malG,1,different_operon
+b4035,maltose transporter,malK,2,different_operon
+b0054,outer membrane LPS assemply complex,lptD,1,different_operon
+b0641,outer membrane LPS assemply complex,lptE,1,different_operon
+b3699,DNA gyrase,gyrB,2,different_operon
+b2231,DNA gyrase,gyrA,2,different_operon
+b4200,30S ribosome,rpsF,1,different_operon
+b3303,30S ribosome,rpsE,1,different_operon
+b3314,30S ribosome,rpsC,1,different_operon
+b3165,30S ribosome,rpsO,1,different_operon
+b3307,30S ribosome,rpsN,1,different_operon
+b3298,30S ribosome,rpsM,1,different_operon
+b3342,30S ribosome,rpsL,1,different_operon
+b3297,30S ribosome,rpsK,1,different_operon
+b3321,30S ribosome,rpsJ,1,different_operon
+b3230,30S ribosome,rpsI,1,different_operon
+b3065,30S ribosome,rpsU,1,different_operon
+b0023,30S ribosome,rpsT,1,different_operon
+b3316,30S ribosome,rpsS,1,different_operon
+b4202,30S ribosome,rpsR,1,different_operon
+b3311,30S ribosome,rpsQ,1,different_operon
+b2609,30S ribosome,rpsP,1,different_operon
+b2595,outer membrane protein assembly complex,bamD,1,different_operon
+b0177,outer membrane protein assembly complex,bamA,1,different_operon
+b2512,outer membrane protein assembly complex,bamB,1,different_operon
+b2477,outer membrane protein assembly complex,bamC,1,different_operon
+b3030,topoisomerase IV,parE,2,different_operon
+b3019,topoisomerase IV,parC,2,different_operon
+b2185,50S ribosome,rplY,1,different_operon
+b3315,50S ribosome,rplV,1,different_operon
+b3318,50S ribosome,rplW,1,different_operon
+b1716,50S ribosome,rplT,1,different_operon
+b3186,50S ribosome,rplU,1,different_operon
+b3304,50S ribosome,rplR,1,different_operon
+b2606,50S ribosome,rplS,1,different_operon
+b3313,50S ribosome,rplP,1,different_operon
+b3294,50S ribosome,rplQ,1,different_operon
+b3310,50S ribosome,rplN,1,different_operon
+b3301,50S ribosome,rplO,1,different_operon
+b3231,50S ribosome,rplM,1,different_operon
+b3983,50S ribosome,rplK,1,different_operon
+b4203,50S ribosome,rplI,1,different_operon
+b3305,50S ribosome,rplF,1,different_operon
+b3308,50S ribosome,rplE,1,different_operon
+b3317,50S ribosome,rplB,1,different_operon
+b3320,50S ribosome,rplC,1,different_operon
+b1717,50S ribosome,rpmI,1,different_operon
+b3703,50S ribosome,rpmH,1,different_operon
+b3299,50S ribosome,rpmJ,1,different_operon
+b3185,50S ribosome,rpmA,1,different_operon
+b3312,50S ribosome,rpmC,1,different_operon
+b3637,50S ribosome,rpmB,1,different_operon
+b3936,50S ribosome,rpmE,1,different_operon
+b3302,50S ribosome,rpmD,1,different_operon
+b3636,50S ribosome,rpmG,1,different_operon
+b1089,50S ribosome,rpmF,1,different_operon
+b3988,RNA polymerase,rpoC,1,different_operon
+b3987,RNA polymerase,rpoB,1,different_operon
+b3295,RNA polymerase,rpoA,2,different_operon

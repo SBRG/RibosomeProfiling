@@ -104,7 +104,7 @@ def geneFrame(genbank_file):
                 func.append("N/A")
             try:
                 aaseq.append(feature.qualifiers['translation'][0])
-            else:
+            except:
                 aaseq.append("N/A")
             if feature.strand == 1:
                 strand.append("plus") 
