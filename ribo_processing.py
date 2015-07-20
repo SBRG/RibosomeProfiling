@@ -197,7 +197,8 @@ def meta_gene(genes, readdensities,distance=999):
             continue #only count genes which are longer than the read distance or this will skew the averaging
         
         regionsum = float(readdensities[strand].ix[start-30: stop+30].sum())
-        
+        if regionsum == 0:
+            continue
         if strand=='plus':
             for n,i in enumerate(range(start-30,start+distance,3)):
                 meta_gene_start_df[n-10][index]=readdensities[strand].ix[i:i+2].sum()/(regionsum/length)
@@ -331,7 +332,7 @@ def exp_dropoff_correction(genes, readdensities,min_read_count=1,min_length=150,
     i = range(1,10000)
     multiplier = []
     for nt in i:
-        j = model_func(float(nt)/3, A, K, C)
+        j = model_func(float(nt), A, K, C)
         multiplier.append(j)
     
     dropoff_corrected_read_densities = readdensities.copy()
@@ -369,15 +370,15 @@ def pause_site_correction(genes, readdensities, totalreads, method='std_dev',set
         length = stop - start + 1
         gene_series = readdensities[strand][start:stop]
         ave = gene_series.sum()/length #find the average occupancy across the gene
-        std_dev = np.std(gene_series/float(length)) #find the standard deviation
+        std_dev = np.std(gene_series/float(length))/gene_series.sum() #find the standard deviation
         if method == 'std_dev':
             threshold = ave + 5*std_dev
             #print threshold
         for i in range(length):
             if readdensities[strand][start+i] < threshold: #pause sites are considered to be nucleotides where occupancy is > threshold 
-                pause_corrected_read_densities[strand][start+i] = readdensities[strand][start+i]
+                pause_corrected_read_densities.ix[start+i, strand]= readdensities[strand][start+i]
             elif set_to_zero: #occupancy on identified pause sites are reduced to threshold value
-                pause_corrected_read_densities[strand][start+i] = 0.
+                pause_corrected_read_densities.ix[start+i, strand] = 0.
             else:
-                pause_corrected_read_densities[strand][start+i] = threshold
+                pause_corrected_read_densities.ix[start+i, strand] = threshold
     return pause_corrected_read_densities
